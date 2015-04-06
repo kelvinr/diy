@@ -1,0 +1,22 @@
+-next_page = params[:offset].to_i + page_count
+-prev_page = params[:offset].to_i - page_count
+-offset = "?offset="
+-other_params ||= nil
+section.paginate
+  ul.pagination
+    -unless params[:offset].nil? || params[:offset] == '0'
+      li.pager
+        =link_to "#{url}" + "#{offset}#{prev_page}#{other_params}" do
+          span aria-hidden='true' &laquo;
+    -@pages.times do |n|
+      -up_one = n * page_count
+      -if (params[:offset].nil? && n == 0) || params[:offset] == (n * page_count).to_s
+        li.active
+          =link_to "#{n+1}", '#'
+      -else
+        li
+          =link_to "#{n+1}", "#{url}" + "#{offset}#{up_one}#{other_params}"
+    -unless params[:offset].to_i / page_count + 1 == @pages
+      li.pager
+        =link_to "#{url}" + "#{offset}#{next_page}#{other_params}" do
+          span aria-hidden='true' &raquo;

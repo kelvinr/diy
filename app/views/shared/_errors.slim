@@ -1,0 +1,7 @@
+-if obj.errors.any?
+  .alert.alert-danger.text-center
+    ' The form contains
+    =pluralize obj.errors.count, 'error'
+    -obj.errors.full_messages.each do |msg|
+      br
+      =msg

@@ -1,0 +1,17 @@
+=render @question
+
+aside#comment
+  =render 'categories/subscribe', category: @question.category
+  -if logged_in?
+    =render 'comments/form'
+
+
+
+#question-comments
+  -if @question.comments.any?
+    h4.text-center Comments
+  -else
+    h4.text-center No Comments
+  =render @comments
+
+  =render 'shared/pagination', page_count: Comment::PER_PAGE, url: question_path(@question)

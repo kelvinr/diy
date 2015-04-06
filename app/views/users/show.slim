@@ -1,0 +1,52 @@
+-@show_msgs ||= false
+=render 'shared/header', title: @user.username
+
+.container
+  .col-xs-12.well.user-info
+    .col-xs-6
+      =image_tag @user.avatar_url, class: 'img-responsive'
+    -if logged_in? && @user != current_user
+      .pull-right
+        =link_to new_message_path do
+          i.glyphicon.glyphicon-envelope
+          |  Send Message
+    h4
+      em> Username:
+      =@user.username
+    h4
+      em> Email verified:
+      =@user.verified == true ? 'Yes' : 'No'
+
+  span.activity
+    =@user.username
+    | 's Activity
+  ul.nav.nav-tabs#user-activity
+    li class="#{'active' if params[:tab].nil?}"
+      =link_to "Questions (#{@user.questions.size})", @user
+    li class="#{'active' if params[:tab] == 'comments'}"
+      =link_to "Comments (#{@user.comments.size})", user_path(@user, tab: "comments")
+    -if @show_msgs
+      li class="#{'active' if params[:tab] == 'recieved'}"
+        =link_to "Recieved Messages (#{@user.recieved_messages.size})", user_path(@user, tab: "recieved")
+      li class="#{'active' if params[:tab] == 'sent'}"
+        =link_to "Sent Messages (#{@user.sent_messages.size})", user_path(@user, tab: "sent")
+
+  / Render the tab according to the tab parameter
+  -if params[:tab].nil?
+    =render @activity
+    =render "shared/pagination", page_count: Question::PER_PAGE, url: user_path(@user)
+  -elsif params[:tab] == "comments"
+    =render @activity
+    =render "shared/pagination", page_count: Comment::PER_PAGE, url: user_path(@user), other_params: "&tab=comments"
+  -elsif @show_msgs
+    -if params[:tab] == "recieved"
+      -@user.mark_unread_messages!
+      =render @activity
+      -if @activity.any?
+        =render "shared/pagination", page_count: Message::PER_PAGE, url: user_path(@user), other_params: "&tab=recieved"
+    -elsif params[:tab] == "sent"
+      =render @activity
+      -if @activity.any?
+        =render "shared/pagination", page_count: Message::PER_PAGE, url: user_path(@user), other_params: "&tab=sent"
+  -else
+    -private_msg(@show, params[:tab])

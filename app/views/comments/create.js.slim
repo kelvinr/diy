@@ -1,0 +1,10 @@
+-if @comment.save
+  | $("h4.text-center").after("#{j render(@comment)}")
+    $("h4.text-center").next("section.contain").css('border-left', '4px solid #88929d');
+    $("#new_comment").find('.form-control').val('').removeClass('');
+    $("#comment").find(".field_with_errors").removeClass('field_with_errors')
+    $("#comment").find(".alert-danger").remove()
+  -if @comment.question.comments.size == 1
+    | $("h4.text-center").text('Comments');
+-else
+  | $("#comment").find(".new-comment").replaceWith("#{j render 'comments/form'}");

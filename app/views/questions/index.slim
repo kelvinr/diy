@@ -1,0 +1,7 @@
+=render 'shared/header', title: 'All questions'
+
+.question-list
+  =render @questions
+
+-if @questions.any?
+  =render 'shared/pagination', page_count: Question::PER_PAGE, url: root_path

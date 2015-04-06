@@ -1,0 +1,29 @@
+-if question.valid?
+  section.contain.hld
+    .question
+      span.category= link_to question.category.name, question.category
+      h5
+        = link_to question.title, question_path(question)
+      h6= question.body
+      small
+        =link_to question do
+          =pluralize question.comments.count, 'Comment'
+      small.text-muted
+        '  | Asked
+        =time_ago_in_words question.created_at
+        '  ago
+
+    -if question.answered
+      .answered-question
+        i.answered<
+
+    .question-vote
+      -if logged_in?
+        =render 'shared/vote', obj: question, url: vote_question_path(question)
+      -else
+        br
+        strong =question.vote_count
+    .question-creator
+      =link_to question.creator do
+        =image_tag question.creator.avatar_url, class: 'img-responsive avatar'
+        =question.creator.username

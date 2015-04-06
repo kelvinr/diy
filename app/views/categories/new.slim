@@ -1,0 +1,14 @@
+=render 'shared/errors', obj: @category
+
+#center-form.contain
+  h3 Create new category
+  =form_for @category do |f|
+    .input
+      =f.label :name
+      =f.text_field :name, class: 'form-control'
+
+    .input
+      =f.label :description
+      =f.text_area :description, class: 'form-control'
+
+    =f.submit class: 'btn btn-success'

@@ -1,0 +1,7 @@
+=form_tag form do
+  =label_tag :remember_me, class: 'checkbox inline' do
+    -if @user && @user.remember_digest
+      =check_box_tag :remember_me, '1', true
+    -else
+      =check_box_tag :remember_me
+    small> Remember me on this computer

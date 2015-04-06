@@ -1,0 +1,18 @@
+.message.contain
+  h5 =message.subject
+  h6 =message.body
+  .row-fluid
+    -if message.sender == current_user
+      .pull-right
+        =link_to message.recipient.username, message.recipient
+        small.text-muted
+          '  | Recieved
+          =time_ago_in_words message.created_at
+          |  ago
+    -else
+      .pull-right
+        =link_to message.sender.username, message.sender
+        small.text-muted
+          '  | Sent
+          =time_ago_in_words message.created_at
+          |  ago

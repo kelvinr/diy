@@ -1,0 +1,229 @@
+//###################
+// Global styling   #
+//###################
+
+$greyblue: #476e82
+
+section
+  @include make-row()
+
+a:hover
+  text-decoration: none
+
+li
+  list-style: none
+
+hr
+  border: none
+.header, .divider
+  height: .14em
+  width: 100%
+  background: rgba(148, 143, 143, .2)
+  margin: 0 0 1.5em 0
+.divider
+  background: rgba(148, 143, 143, .5)
+  margin: 0 auto 2.5em auto
+  width: 97%
+
+.contain
+  @extend .well, .well-sm
+  margin: 0 0 .5em 0
+
+.navbar-nav
+  margin: 0
+
+.align
+  display: flex
+  align-items: center
+
+.paginate
+  @extend .nav
+  text-align: center
+
+//#################
+// Avatar styling #
+//#################
+
+#avatar
+  display: none
+
+.avatar
+  max-height: 75px
+
+.status
+  @extend .progress-bar-success
+  @extend .progress-bar-striped
+
+.file-btn
+  @include button-variant(#fff, #636060, #525252)
+  color: white
+
+#avatar-form
+  @include make-xs-column(12)
+  @include make-md-column-offset(2)
+  @include make-md-column(8)
+  .btn
+    margin-bottom: .35em
+    @include make-xs-column(12)
+    li
+      display: inline-block
+      margin-right: .3em
+
+
+//###############
+// Form styling #
+//###############
+
+#center-form
+  @include make-xs-column(12)
+  @include make-md-column-offset(3)
+  @include make-md-column(6)
+  text-align: center
+
+#full-width-form
+  @include make-xs-column(12)
+  text-align: center
+
+.input
+  @extend .form-group
+  > .form-control
+    max-width: 100%
+  .field_with_errors
+    @extend .has-error
+    .form-control
+      color: red
+
+#confirmation
+  display: none
+
+
+
+//################
+// User styling  #
+//################
+
+.user-info
+  margin-bottom: 2em !important
+
+.activity
+  font-size: 1.2em
+  border: .15em solid $greyblue
+  border-bottom: none
+  border-radius: 4px
+  padding: .3em
+
+
+//####################
+// Category Styling  #
+//####################
+
+#category-questions
+  @include make-xs-column(12)
+  @include make-md-column(7)
+
+#category
+  @include make-xs-column(12)
+  @include make-md-column(5)
+  ul
+    padding-left: 0
+  text-align: center
+
+.category
+  @extend .badge
+  > a
+    text-decoration: none
+    color: #e7daa9
+
+.category-list, .message
+  @include make-xs-column(12)
+  word-wrap: break-word
+
+.cat-result
+  @include make-xs-column(12)
+  .category-list
+    &:last-of-type
+      margin-bottom: 2em
+
+//####################
+// Question Styling  #
+//####################
+
+.question
+  @include make-xs-column(12)
+  @include make-sm-column(10)
+  @include make-sm-column-push(2)
+  @include make-md-column(10)
+
+.question-vote
+  @include make-xs-column(2)
+  @include make-xs-column-offset(3)
+  @include make-sm-column-offset(0)
+  @include make-sm-column-pull(7)
+  @include make-md-column(1)
+  @include make-sm-column-offset(1)
+  @include make-md-column-pull(9)
+  text-align: center
+  padding-left: 0
+
+.answered-question
+  @include make-xs-column(2)
+  @include make-sm-column(1)
+  @include make-sm-column-pull(6)
+  @include make-md-column-pull(8)
+  padding-right: 0
+
+.question-creator
+  @include make-xs-column(5)
+  @include make-xs-column-push(1)
+  @include make-sm-column(3)
+  @include make-sm-column-push(1)
+  @include make-md-column(2)
+  @include make-md-column-push(0)
+
+//###################
+// Comment Styling  #
+//###################
+
+#comment
+  @include make-xs-column(12)
+  @include make-md-column(5)
+  @include make-md-column-push(7)
+  ul
+    padding-left: 0
+  text-align: center
+
+#question-comments
+  @include make-xs-column(12)
+  @include make-md-column(7)
+  @include make-md-column-pull(5)
+
+.comment-list, .que-result
+  @include make-xs-column(12)
+  @include make-md-column(7)
+
+.comment-vote
+  @include make-xs-column(2)
+  @include make-sm-column(1)
+  padding: 0
+  text-align: center
+
+.comment-body
+  @include make-xs-column(9)
+  word-wrap: break-word
+
+.answered, .unanswered
+  @extend .glyphicon, .glyphicon-ok
+  font-size: 2em
+
+.answered
+  color: #068d18
+
+.best-answer
+  padding-right: 0 !important
+  @include size(2em, 40px)
+
+.hld
+  .question-vote
+    margin-top: 1.22em
+  .answered-question
+    margin-top: 1.4em

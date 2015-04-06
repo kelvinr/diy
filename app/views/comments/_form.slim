@@ -1,0 +1,9 @@
+.new-comment
+  =render 'shared/errors', obj: @comment
+  .contain
+    =form_for [@question, @comment], remote: true, authenticity_token: true do |f|
+      .input
+        =f.label :body, 'Comment'
+        =f.text_area :body, class: 'form-control'
+
+      =f.submit 'Submit', class: 'btn btn-success'

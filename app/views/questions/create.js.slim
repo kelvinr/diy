@@ -1,0 +1,15 @@
+-if @question.save
+  | var questions = $("#category-questions");
+    var newQuestion = $(".new-question");
+    if (questions.find(".contain:first-child").hasClass("align")) {
+      questions.prepend("#{j render(@question)}");
+      questions.find(".contain:first-child").removeClass("hld").addClass("align").css('border-left', '4px solid #88929d');
+    } else {
+      questions.prepend("#{j render(@question)}");
+      questions.find(".contain:first-child").css('border-left', '4px solid #88929d');
+    }
+    newQuestion.find(".field_with_errors").removeClass('field_with_errors');
+    newQuestion.find(".alert-danger").remove();
+    newQuestion.find('.form-control').val('');
+-else
+  | $(".new-question").replaceWith("#{j render 'questions/form'}");

@@ -1,0 +1,6 @@
+Hi <%= @user.username %>,
+
+Welcome to the DiY! Please go to the link below to verify your email:
+
+
+<%= edit_email_verification_url(@user.verification_token, email: @user.email) %>

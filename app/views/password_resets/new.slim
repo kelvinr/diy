@@ -1,0 +1,10 @@
+=render 'shared/header', title: 'Password Reset'
+
+#center-form.contain
+  h3 Forgot Password
+  =form_tag '/password_resets' do
+    .input
+      =label_tag :email
+      =email_field :email, nil, class: 'form-control'
+
+    =submit_tag 'Submit', class: 'btn btn-primary'

@@ -1,0 +1,78 @@
+<script>
+  $(function() {
+    $('.directUpload').find("input:file").each(function(i, elem) {
+      var fileInput = $(elem);
+      var uploadBtn = $('.btn-success');
+      var updateBtn = $('.btn-primary');
+      var form = $(fileInput.parents('form:first'));
+      var progressBar = $("<div class='status active'></div>");
+      var barContainer = $("<div class='progress'></div>").append(progressBar);
+      $('#avatar-form').before(barContainer);
+      fileInput.fileupload({
+        fileInput: fileInput,
+        url: '<%= @s3_bucket.url %>',
+        type: 'POST',
+        autoUpload: false,
+        formData: <%= @s3_bucket.fields.to_json.html_safe %>,
+        paramName: 'file',
+        dataType: 'XML',
+        disableImageResize: /Android(?!.*Chrome)|Opera/
+          .test(window.navigator && navigator.userAgent),
+          imageMaxWidth: 300,
+          imageMaxHeight: 400
+        }).on('fileuploadadd', function(e, data){
+          uploadBtn.click(function(){
+            data.submit()
+          });
+        }).on('fileuploadprogressall', function(e, data){
+          var progress = parseInt(data.loaded / data.total * 100, 10);
+          progressBar.css('width', progress + '%')
+        }).on('fileuploadstart', function(e, data){
+          $('.btn-success').prop('disabled', true);
+          progressBar
+          .css('width', '0%')
+          .text('Loading...');
+        }).on('fileuploaddone', function(e, data){
+          $('.btn-success').prop('disabled', false);
+          progressBar.text('Uploading done');
+          var key = $(data.jqXHR.responseXML).find("Key").text();
+          var url = '<%= @s3_bucket.url %>' + key;
+          var input = $("<input />", {type:'hidden', name: fileInput.attr('name'), value: url});
+          form.append(input);
+          var uploads = $('#uploads').val();
+          $('#uploads').val(uploads + key + ' ');
+        }).on('fileuploadfail', function(e, data){
+          $('.btn-success').prop('disabled', false);
+          progressBar
+          .css('background', 'red')
+          .text('Failed')
+        });
+      });
+      document.getElementById('avatar').onchange = function(e) {
+        loadImage(
+          e.target.files[0],
+          function(img) {
+            var scaledImage = loadImage.scale(
+              img,
+              {maxWidth: 300},
+              {maxHeight: 400}
+            );
+            $('canvas').replaceWith(scaledImage);
+          },
+          {canvas: true}
+        );
+      };
+      var imageObj = new Image();
+      imageObj.src = '<%= @user.avatar_url %>'
+      if (imageObj.src.match(/\/avatar-placeholder.png/)) {
+        imageObj.src = 'https://s3.amazonaws.com/diyavatar/avatar.png'
+      }
+      imageObj.onload = function() {
+        var canvas = document.getElementById('myCanvas')
+        var context = canvas.getContext('2d');
+        var width = imageObj.width
+        var height = imageObj.height
+        context.drawImage(imageObj, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+      }
+    });
+</script>

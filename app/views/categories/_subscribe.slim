@@ -1,0 +1,22 @@
+ul
+  h4 Category details
+  hr.header
+  li
+    ' Created:
+    =time_ago_in_words category.created_at
+    |  ago
+  li
+    ' Questions:
+    =category.questions.count
+-if logged_in?
+  h3
+    -if current_user.subs.include? category
+        =form_tag "/categories/#{category.id}/unsub", class: 'star'
+          =link_to '#' do
+            i.glyphicon.glyphicon-star>
+            | Unsubscribe
+    -else
+        =form_tag "/categories/#{category.id}/sub", class: 'sub star'
+          =link_to '#' do
+            i.glyphicon.glyphicon-star-empty>
+            | Subscribe

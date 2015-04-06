@@ -1,0 +1,28 @@
+=render 'shared/header', title: 'Avatar Upload'
+
+#center-form.contain
+  h3.text-center Avatar
+  =form_for(@user, url: update_avatar_user_path, html: {class: 'directUpload'}) do |f|
+    =hidden_field_tag 'uploads'
+
+    canvas#myCanvas
+
+    ul#avatar-form
+      .btn
+        li
+          #avatar
+            =f.file_field :avatar_url
+          =f.label :avatar_url, "Photo", class: 'btn file-btn'
+
+        li
+          button.btn.btn-success type='button' Upload
+
+      .btn
+        li
+          =submit_tag "Update profile", class: 'btn btn-primary'
+        -if !@user.avatar_url.include?('avatar-placeholder.png')
+          li
+            =link_to "Delete avatar", delete_avatar_user_path(current_user), class: 'btn btn-danger',
+            method: :delete, data: { confirm: 'Are You sure?' }
+
+=render 'avatar'

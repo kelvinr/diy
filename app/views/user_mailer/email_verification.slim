@@ -1,0 +1,9 @@
+h1 DiY
+
+p ="Hi #{@user.username}, "
+
+p
+  | Welcome to DiY! Click the link below to verify your email:
+  
+
+=link_to 'Verify email', edit_email_verification_url(@user.verification_token, email: @user.email)

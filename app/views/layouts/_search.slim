@@ -1,0 +1,5 @@
+=form_tag '/search', class: 'navbar-form navbar-right' do
+  .input-group
+    =text_field_tag :search_term, nil, placeholder: 'Search term', class: 'form-control'
+    span.input-group-btn
+      =submit_tag 'Search', class: 'btn btn-default'

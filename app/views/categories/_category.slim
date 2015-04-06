@@ -1,0 +1,20 @@
+.category-list
+  section.contain
+    =link_to category.name, category
+    span.info<
+      '  |
+      =pluralize category.questions.count, 'Question'
+      span.pull-right<
+        -if logged_in?
+          -if current_user.subs.include? category
+              =form_tag "/categories/#{category.id}/unsub", class: 'star'
+                =link_to '#' do
+                  i.glyphicon.glyphicon-star>
+                  | Unsubscribe
+          -else
+              =form_tag "/categories/#{category.id}/sub", class: 'sub star'
+                =link_to '#' do
+                  i.glyphicon.glyphicon-star-empty>
+                  | Subscribe
+      br
+      p=category.description

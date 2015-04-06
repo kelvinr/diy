@@ -1,0 +1,14 @@
+=render 'shared/header', title: 'Search results'
+ul.nav.nav-tabs
+  li#all.active
+    =link_to 'All', '#'
+  li#search-c
+    =link_to "Categories", '#'
+  li#search-q
+    =link_to "Questions", '#'
+
+.cat-result
+  =render @categories
+hr.divider
+.que-result.question-list
+  =render @questions

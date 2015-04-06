@@ -1,0 +1,17 @@
+=render 'shared/header', title: 'Login'
+#center-form.contain
+  h3 Login
+  =form_tag '/login' do
+    .input
+      =label_tag :email, 'Username or Email'
+      =text_field_tag :email, nil, class: 'form-control'
+
+    .input
+      =label_tag :password
+      =password_field_tag :password, nil, class: 'form-control'
+
+    =link_to 'forgot password?', new_password_reset_path
+
+    .input
+      =render 'shared/remember_me', form: '/login'
+      =submit_tag 'Login', class: 'btn btn-success'

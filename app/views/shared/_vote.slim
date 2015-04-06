@@ -1,0 +1,7 @@
+=form_tag "#{url}?vote=true", class:'votes'
+  =link_to "#" do
+    i.glyphicon.glyphicon-menu-up
+strong =obj.vote_count
+=form_tag "#{url}?vote=false", class:'votes'
+  =link_to "#" do
+    i.glyphicon.glyphicon-menu-down

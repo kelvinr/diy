@@ -1,0 +1,14 @@
+.new-question
+  =render 'shared/errors', obj: @question
+  .contain
+    h3 Create Question
+    =form_for [@category, @question], remote: true do |f|
+      .input
+        =f.label :title, 'Question'
+        =f.text_field :title, class: 'form-control'
+
+      .input
+        =f.label :body, 'Further details'
+        =f.text_area :body, class: 'form-control'
+
+      =f.submit 'Submit', class: 'btn btn-success'

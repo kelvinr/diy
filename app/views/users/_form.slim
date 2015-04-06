@@ -1,0 +1,26 @@
+-new_user = @user.new_record?
+=render 'shared/header', title: new_user ? 'Register' : 'Edit Profile'
+=render 'shared/errors', obj: @user
+
+#center-form.contain
+  h3 #{new_user ? 'Registration' : 'Edit profile'}
+  =form_for(@user, html: {class: 'directUpload'})  do |f|
+    .input
+      =f.label :username
+      =f.text_field :username, class: 'form-control'
+
+    .input
+      =f.label :email
+      =f.email_field :email, class: 'form-control'
+
+    .input#pw
+      =f.label :password
+      =f.password_field :password, class: 'form-control'
+
+    .input#confirmation
+      =f.label :password_confirmation, 'Confirmation'
+      =f.password_field :password_confirmation, class: 'form-control'
+
+    .input
+      =render 'shared/remember_me', form: '/register'
+      =f.submit new_user ? 'Create profile' : 'Update profile', class: 'btn btn-primary'

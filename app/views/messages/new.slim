@@ -1,0 +1,14 @@
+=render 'shared/header', title: "New message for: #{link_to @user.username, @user}".html_safe
+=render 'shared/errors', obj: @message
+#center-form.contain
+    h3 New Message
+    =form_for @message do |f|
+      .input
+        =f.label :subject
+        =f.text_field :subject, class: 'form-control'
+
+      .input
+        =f.label :body, 'Message'
+        =f.text_area :body, class: 'form-control'
+
+      =f.submit 'Send', class: 'btn btn-primary'

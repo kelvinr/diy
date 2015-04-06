@@ -1,0 +1,42 @@
+nav.navbar.navbar-default
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle.collapsed type='button' data-toggle='collapse' data-target='#navbar-collapse'
+        span.sr-only
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      =link_to 'DiY', root_path, class: 'navbar-brand'
+    .navbar-collapse.collapse#navbar-collapse
+      .nav.navbar-nav
+        ul.nav.navbar-nav
+          li= link_to 'Categories', categories_path
+          -if logged_in?
+            li= link_to 'New Category', new_category_path
+            -if current_user.unread_messages.any?
+              li= link_to user_path(current_user, tab: 'recieved') do
+                i.glyphicon.glyphicon-envelope
+            </ul>
+            </div>
+            ul.nav.navbar-nav
+              li.dropdown
+                a.dropdown-toggle href='#' data-toggle='dropdown' role='button' aria-expanded='false'
+                  =current_user.username
+                  span.caret<
+                ul.dropdown-menu
+                  li= link_to current_user do
+                    i.glyphicon.glyphicon-user
+                    |  Account
+                  li= link_to edit_user_path(current_user) do
+                    i.glyphicon.glyphicon-pencil
+                    |  Edit Profile
+                  li= link_to avatar_user_path(current_user) do
+                    i.glyphicon.glyphicon-camera
+                    |  Avatar
+                  li.divider
+                  li= link_to logout_path, method: :delete do
+                    i.glyphicon.glyphicon-log-out  Logout
+          -else
+            li= link_to 'Create Profile', register_path
+            li= link_to 'Login', login_path
+        =render 'layouts/search'
