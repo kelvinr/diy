@@ -7,15 +7,15 @@ nav.navbar.navbar-default
         span.icon-bar
         span.icon-bar
       =link_to 'DiY', root_path, class: 'navbar-brand'
+      -if logged_in? and current_user.unread_messages.any?
+        li= link_to user_path(current_user, tab: 'recieved'), class: 'navbar-brand' do
+          i.glyphicon.glyphicon-envelope
     .navbar-collapse.collapse#navbar-collapse
       .nav.navbar-nav
         ul.nav.navbar-nav
           li= link_to 'Categories', categories_path
           -if logged_in?
             li= link_to 'New Category', new_category_path
-            -if current_user.unread_messages.any?
-              li= link_to user_path(current_user, tab: 'recieved') do
-                i.glyphicon.glyphicon-envelope
             </ul>
             </div>
             ul.nav.navbar-nav

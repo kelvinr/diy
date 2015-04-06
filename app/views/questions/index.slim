@@ -2,6 +2,12 @@
 
 .question-list
   =render @questions
+  -if @questions.empty?
+    #center-form
+      .alert.alert-info
+        | You don't have any subscriptions yet! Now that you're logged in click over to categories or enter a search term.
+            All questions for your category subscriptions will be found here.
+
 
 -if @questions.any?
   =render 'shared/pagination', page_count: Question::PER_PAGE, url: root_path
