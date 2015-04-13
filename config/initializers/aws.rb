@@ -1,5 +1,8 @@
-aws = YAML.load(ERB.new(File.read("#{Rails.root}/config/aws.yml")).result)[Rails.env].symbolize_keys
-AWS.config(access_key_id: aws[:access_key_id],
-secret_access_key: aws[:secret_access_key])
+creds = Rails.env == "production" ? {access_key_id: ENV["AWS_ACCESS_KEY_ID"], secret_access_key: ENV["AWS_SECRET_ACCESS_KEY"]} :
+JSON.load(File.read("/home/kelvin/diy_creds.json")).symbolize_keys
 
-S3_BUCKET = AWS::S3.new.buckets['diyavatar']
+Aws.config.update({region: "us-east-1",
+  credentials: Aws::Credentials.new(creds[:access_key_id], creds[:secret_access_key]),
+  })
+
+S3_BUCKET = Aws::S3::Resource.new.bucket('diyavatar')

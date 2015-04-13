@@ -79,12 +79,14 @@ class User < ActiveRecord::Base
     unread_messages.each do |msg|
       msg.mark_read!
     end
+
+    self.unread_messages.clear
   end
 
   def delete_avatar
     key = self.avatar_url.match(/[^"]+/, 35).to_s
     unless key.empty? || self.avatar_url.include?('avatar-placeholder.png')
-      obj = S3_BUCKET.objects[key]
+      obj = S3_BUCKET.object(key)
       obj.delete if obj.exists?
     end
   end

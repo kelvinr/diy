@@ -39,8 +39,8 @@ class UsersController < ApplicationController
 
   def avatar
     @s3_bucket = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}-${filename}",
-                                          success_action_status: 201,
-                                          acl: :public_read_write)
+                                          success_action_status: "201",
+                                          acl: "public-read-write")
   end
 
   def update_avatar
