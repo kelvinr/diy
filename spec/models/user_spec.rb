@@ -32,6 +32,7 @@ describe User do
     it "returns a urlsafe_base64 token" do
       string = User.new_token
       expect(string).to match(/\S/)
+      expect(string.size).to eq(22)
     end
   end
 
@@ -48,16 +49,10 @@ describe User do
   end
 
   describe '#forget' do
-    before { user.remember }
-
     it 'sets users remember digest to nil' do
+      user.remember
       user.forget
       expect(user.remember_digest).to be_nil
-    end
-
-    it 'sets  @current_user to nil' do
-      user.forget
-      expect(@current_user).to be_nil
     end
   end
 
@@ -88,7 +83,7 @@ describe User do
     before { user.create_reset_digest }
 
     it "sets users reset_token" do
-      expect(user.reset_token).to match(/\S/)
+      expect(user.reset_token).not_to be_nil
     end
 
     it "sets the user reset_digest from hash of reset_token" do
@@ -186,7 +181,7 @@ describe User do
 
   describe '#create_verification_digest' do
     it 'sets verification_token on user creation' do
-      expect(user.verification_token).to match(/\S/)
+      expect(user.verification_token).not_to be_nil
     end
 
     it 'sets the user verification_digest' do
