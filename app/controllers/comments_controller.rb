@@ -46,7 +46,7 @@ class CommentsController < ApplicationController
   def best_answer
     comment = Comment.find(params[:id])
     question = comment.question
-    
+
     if question.creator == current_user
       comment.update(answer: true)
       question.update(answered: true)
@@ -60,7 +60,7 @@ class CommentsController < ApplicationController
     end
   end
 
-  private
+private
 
   def comment_params
     params.require(:comment).permit(:body)

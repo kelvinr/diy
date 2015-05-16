@@ -95,18 +95,18 @@ class User < ActiveRecord::Base
     self.avatar_url = 'https://s3.amazonaws.com/diyavatar/avatar-placeholder.png' if self.avatar_url.blank?
   end
 
-  private
+private
 
-    def set_default_subs
-      self.subs << Category.where(id: [1, 2, 3])
-    end
+  def set_default_subs
+    self.subs << Category.where(id: [1, 2, 3])
+  end
 
-    def downcase_email
-      self.email = email.downcase
-    end
+  def downcase_email
+    self.email = email.downcase
+  end
 
-    def create_verification_digest
-      self.verification_token = User.new_token
-      self.verification_digest = User.digest(verification_token)
-    end
+  def create_verification_digest
+    self.verification_token = User.new_token
+    self.verification_digest = User.digest(verification_token)
+  end
 end

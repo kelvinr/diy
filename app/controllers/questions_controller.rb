@@ -64,13 +64,13 @@ class QuestionsController < ApplicationController
     end
   end
 
-  private
+private
 
-    def find_question
-      @question = Question.find(params[:id])
-    end
+  def find_question
+    @question = Question.find(params[:id])
+  end
 
-    def question_params
-      params.require(:question).permit(:title, :body)
-    end
+  def question_params
+    params.require(:question).permit(:title, :body)
+  end
 end

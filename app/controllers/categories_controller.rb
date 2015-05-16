@@ -53,13 +53,13 @@ class CategoriesController < ApplicationController
     end
   end
 
-  private
+private
 
-    def user_subs
-      @user_subs ||= Category.where(id: current_user.subs.ids)
-    end
+  def user_subs
+    @user_subs ||= Category.where(id: current_user.subs.ids)
+  end
 
-    def find_category
-      @category = Category.find params[:id]
-    end
+  def find_category
+    @category = Category.find params[:id]
+  end
 end

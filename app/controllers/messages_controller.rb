@@ -23,13 +23,13 @@ class MessagesController < ApplicationController
     end
   end
 
-  private
+private
 
-    def message_params
-      params.require(:message).permit(:subject, :body)
-    end
+  def message_params
+    params.require(:message).permit(:subject, :body)
+  end
 
-    def find_recipient
-      @user = User.find(params[:id])
-    end
+  def find_recipient
+    @user = User.find(params[:id])
+  end
 end

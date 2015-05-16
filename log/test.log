@@ -38977,3 +38977,690 @@ Content-Transfer-Encoding: 7bit
   [1m[35mSQL (0.5ms)[0m  INSERT INTO "votes" ("user_id", "voteable_id", "voteable_type", "vote", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["user_id", 712], ["voteable_id", 11], ["voteable_type", "Question"], ["vote", "t"], ["created_at", "2015-04-14 23:30:07.687755"], ["updated_at", "2015-04-14 23:30:07.687755"]]
   [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
   [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (114.0ms)[0m  [1mDROP DATABASE IF EXISTS "diy_test"[0m
+  [1m[35m (232.0ms)[0m  CREATE DATABASE "diy_test" ENCODING = 'unicode'
+  [1m[36mSQL (0.3ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (9.7ms)[0m  CREATE TABLE "categories" ("id" serial primary key, "name" character varying, "description" text, "tsv" tsvector, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (1.7ms)[0m  [1mCREATE  INDEX  "tsv_index" ON "categories" USING gin ("tsv")[0m
+  [1m[35m (8.0ms)[0m  CREATE TABLE "comments" ("id" serial primary key, "body" text, "answer" boolean DEFAULT 'f', "user_id" integer, "question_id" integer, "created_at" timestamp, "updated_at" timestamp, "vote_count" integer DEFAULT 0) 
+  [1m[36m (7.6ms)[0m  [1mCREATE TABLE "messages" ("id" serial primary key, "subject" character varying, "body" text, "recipient_id" integer, "sender_id" integer, "created_at" timestamp, "updated_at" timestamp, "read" boolean DEFAULT 'f') [0m
+  [1m[35m (7.5ms)[0m  CREATE TABLE "questions" ("id" serial primary key, "title" character varying, "body" text, "answered" boolean DEFAULT 'f', "user_id" integer, "category_id" integer, "tsv" tsvector, "created_at" timestamp, "updated_at" timestamp, "vote_count" integer DEFAULT 0) 
+  [1m[36m (1.6ms)[0m  [1mCREATE  INDEX  "tsa_index" ON "questions" USING gin ("tsv")[0m
+  [1m[35m (7.0ms)[0m  CREATE TABLE "user_categories" ("id" serial primary key, "user_id" integer, "category_id" integer, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (11.1ms)[0m  [1mCREATE TABLE "users" ("id" serial primary key, "username" character varying, "email" character varying, "password_digest" character varying, "created_at" timestamp, "updated_at" timestamp, "remember_digest" character varying, "verification_digest" character varying, "verified" boolean DEFAULT 'f', "verified_at" timestamp, "reset_digest" character varying, "reset_sent_at" timestamp, "avatar_url" character varying) [0m
+  [1m[35m (10.6ms)[0m  CREATE TABLE "votes" ("id" serial primary key, "vote" boolean, "user_id" integer, "voteable_id" integer, "voteable_type" character varying, "created_at" timestamp, "updated_at" timestamp) 
+  [1m[36m (4.5ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL) [0m
+  [1m[35m (4.0ms)[0m  CREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")
+  [1m[36m (0.3ms)[0m  [1mSELECT version FROM "schema_migrations"[0m
+  [1m[35m (1.4ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150324060228')
+  [1m[36m (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150316053242')[0m
+  [1m[35m (1.2ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150314112235')
+  [1m[36m (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150313025409')[0m
+  [1m[35m (1.1ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150317080524')
+  [1m[36m (1.2ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150313030748')[0m
+  [1m[35m (1.3ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150324013506')
+  [1m[36m (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150317091256')[0m
+  [1m[35m (1.2ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150317042257')
+  [1m[36m (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150313031855')[0m
+  [1m[35m (1.3ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150313031744')
+  [1m[36m (1.3ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150316033908')[0m
+  [1m[35m (1.3ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150323054450')
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'verda_robel' LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('savanna@beierhowe.com') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'verda_robel' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('savanna@beierhowe.com') LIMIT 1[0m
+  [1m[35mCategory Load (0.5ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "verified", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["username", "verda_robel"], ["email", "savanna@beierhowe.com"], ["password_digest", "$2a$04$.nU56EMybdAAcD2OaDjLZOFrwDJivvF9FgZgAQ/a21MmKNohOPqba"], ["verified", "t"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 05:50:13.553222"], ["updated_at", "2015-05-16 05:50:13.553222"], ["verification_digest", "$2a$04$dLyu.92x7tIGeOj0EIOGy..wHd2xDGPo86mg/lnyIxuGj3VaiiOPa"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.3ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.4ms)[0m  SELECT COUNT(*) FROM "questions" WHERE "questions"."user_id" = $1  [["user_id", 1]]
+  Rendered users/show.slim within layouts/application (0.2ms)
+Completed 200 OK in 22ms (Views: 6.2ms | ActiveRecord: 1.4ms)
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "messages" ("subject", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["subject", "Ipsum consectetur voluptas asperiores esse consequatur omnis eveniet."], ["body", "Totam cumque tenetur. Non officiis autem velit molestiae ut occaecati qui. Dolorem eius dolor. Quia atque eveniet expedita impedit provident sint."], ["created_at", "2015-05-16 07:18:03.570319"], ["updated_at", "2015-05-16 07:18:03.570319"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mUPDATE "messages" SET "read" = $1, "updated_at" = $2 WHERE "messages"."id" = $3[0m  [["read", "t"], ["updated_at", "2015-05-16 07:18:03.575454"], ["id", 1]]
+  [1m[35m (0.2ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" IS NULL LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."email" IS NULL LIMIT 1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Load (0.4ms)[0m  [1mSELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mCategory Load (0.5ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"  [["email", "a"], ["password_digest", "$2a$04$gX3hCbdEOsmG6uLQl0Tau.a.PEHHdk2pgXNx9BEQd.jMYYZvQnoZK"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.651249"], ["updated_at", "2015-05-16 07:18:03.651249"], ["verification_digest", "$2a$04$8a3MEv79BXxYoz4NkSr48.VVejF7N2pbbpe/5aFAS7nqKENtpxO7."]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" IS NULL LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('A') LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" IS NULL LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('foobar090@hotmail.com') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" IS NULL LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."email" IS NULL LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'marilyne_hane' LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('howell@kerluke.name') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'marilyne_hane' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('howell@kerluke.name') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "marilyne_hane"], ["email", "howell@kerluke.name"], ["password_digest", "$2a$04$oCnco8dlA9TbaRGRkL9tzObk3Is8NLyOPvrQrcnLvDxaxmjiK9Ow2"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.722279"], ["updated_at", "2015-05-16 07:18:03.722279"], ["verification_digest", "$2a$04$pWhUXLw6d1xvoBbTYWz7LeIq.0bLYqCnECgvAzlY/4L8Q3KiJFQsK"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'marilyne_hane' AND "users"."id" != 3) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('howell@kerluke.name') AND "users"."id" != 3) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "remember_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["remember_digest", "$2a$04$Yj7Y7/Q3.CwnUM1pHc4hRedgN52Hm8pd8xtNKgmvJ.AKOfWe5oQGG"], ["updated_at", "2015-05-16 07:18:03.733697"], ["id", 3]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'marcelina' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('favian_hauck@baumbachweinat.name') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'marcelina' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('favian_hauck@baumbachweinat.name') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "marcelina"], ["email", "favian_hauck@baumbachweinat.name"], ["password_digest", "$2a$04$62xAIyM4vz4O5iPATogUUenqHWzipfudTWOMo1KNr1j6M.zBGnbW."], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.742616"], ["updated_at", "2015-05-16 07:18:03.742616"], ["verification_digest", "$2a$04$Qy/3eH6MEmJqBXDRdVxgyuPh9zr3XbmEsWIcI7fczlTTQuyVJ42P6"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'marcelina' AND "users"."id" != 4) LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('favian_hauck@baumbachweinat.name') AND "users"."id" != 4) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "remember_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["remember_digest", "$2a$04$1s7cA11Pug6CIreOABNHtO1WrQTW5.4hwKD8gPKZPh6fygDWjC856"], ["updated_at", "2015-05-16 07:18:03.753674"], ["id", 4]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'trudie.dubuque' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('yoshiko.barton@bayer.org') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'trudie.dubuque' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('yoshiko.barton@bayer.org') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "trudie.dubuque"], ["email", "yoshiko.barton@bayer.org"], ["password_digest", "$2a$04$D6rZh4ZaxsRnkOucfu4rJeiC/9S/PJJbZWHiUuJu9lYlHY8Ce4gOi"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.763833"], ["updated_at", "2015-05-16 07:18:03.763833"], ["verification_digest", "$2a$04$tlSXzaOf4cKexSCoRUNW.us7P5r1gamgXwoDwTc/IG5X.xzm06.Ca"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'trudie.dubuque' AND "users"."id" != 5) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('yoshiko.barton@bayer.org') AND "users"."id" != 5) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "remember_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["remember_digest", "$2a$04$S7x0YGIU4vqmQVivzJbSIuhdJumAqrQaRubbADwExg6zC48pvY5cC"], ["updated_at", "2015-05-16 07:18:03.773933"], ["id", 5]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'trudie.dubuque' AND "users"."id" != 5) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('yoshiko.barton@bayer.org') AND "users"."id" != 5) LIMIT 1[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "users" SET "remember_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["remember_digest", nil], ["updated_at", "2015-05-16 07:18:03.777499"], ["id", 5]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'kaley' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('terrell@mrazfahey.biz') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'kaley' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('terrell@mrazfahey.biz') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "kaley"], ["email", "terrell@mrazfahey.biz"], ["password_digest", "$2a$04$kMWHs8QhVwKA3g/cxM3LEeaO8sExA.RXZ8AHkC4x9xrDG2v6DMf3W"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.786501"], ["updated_at", "2015-05-16 07:18:03.786501"], ["verification_digest", "$2a$04$Jmihs4duQW1P9aI4l6AJZ.OMhNZYrAx91HPz.8OJhCfINiPJ0SlJO"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'kaley' AND "users"."id" != 6) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('terrell@mrazfahey.biz') AND "users"."id" != 6) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "remember_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["remember_digest", "$2a$04$LGOLpmKt7u.yeYVw4fOpX.R20g/IEcxTOVCgxFxRrrOnrQCHjJ1nS"], ["updated_at", "2015-05-16 07:18:03.796717"], ["id", 6]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'brandt' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('agustin.wehner@gottlieb.net') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'brandt' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('agustin.wehner@gottlieb.net') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "brandt"], ["email", "agustin.wehner@gottlieb.net"], ["password_digest", "$2a$04$sPc5XSGIHEKQrGyHBUpflOxofjPrMbF.kN11zGyNUnnhhMHfD.oNa"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.806592"], ["updated_at", "2015-05-16 07:18:03.806592"], ["verification_digest", "$2a$04$aUOb.Rvqo4ukbpebMyI3TOVmOJA8b5Ry7Jl2QOshTdO2xEmmb3N0m"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'shyanne_ankunding' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('kristopher_goyette@dachokon.net') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'shyanne_ankunding' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('kristopher_goyette@dachokon.net') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "shyanne_ankunding"], ["email", "kristopher_goyette@dachokon.net"], ["password_digest", "$2a$04$8O0D74qKjFaIKzUTfIg1K.J9XvmfdGACxQTZA/pjt3r1Hnq8jDnz6"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.820139"], ["updated_at", "2015-05-16 07:18:03.820139"], ["verification_digest", "$2a$04$gwd5jMaBvvJFD4PGUnsD/.Ys1EsvLg5EkNQX.hk8BlyRrFPQsC40O"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'shyanne_ankunding' AND "users"."id" != 8) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('kristopher_goyette@dachokon.net') AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "verified" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["verified", "t"], ["updated_at", "2015-05-16 07:18:03.828623"], ["id", 8]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'shyanne_ankunding' AND "users"."id" != 8) LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('kristopher_goyette@dachokon.net') AND "users"."id" != 8) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "verified_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["verified_at", "2015-05-16 07:18:03.830012"], ["updated_at", "2015-05-16 07:18:03.832028"], ["id", 8]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'treie' LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('amie@keler.info') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.6ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'treie' LIMIT 1
+  [1m[36mUser Exists (0.5ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('amie@keler.info') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "treie"], ["email", "amie@keler.info"], ["password_digest", "$2a$04$/01v1Vv7pzNLI7uzE6PJlufiadFxYietP7YbKomkkTH7nsR3G8P0u"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.843288"], ["updated_at", "2015-05-16 07:18:03.843288"], ["verification_digest", "$2a$04$eIaxS6FH/xwU.igOyFdTLeoe7q3fJs0/glq1AFxroKcrgmk8UaOqi"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'treie' AND "users"."id" != 9) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('amie@keler.info') AND "users"."id" != 9) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "verified" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["verified", "t"], ["updated_at", "2015-05-16 07:18:03.856837"], ["id", 9]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'treie' AND "users"."id" != 9) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('amie@keler.info') AND "users"."id" != 9) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "verified_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["verified_at", "2015-05-16 07:18:03.858183"], ["updated_at", "2015-05-16 07:18:03.860394"], ["id", 9]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'vito_reichel' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('norris_borer@pfannerstill.net') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'vito_reichel' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('norris_borer@pfannerstill.net') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "vito_reichel"], ["email", "norris_borer@pfannerstill.net"], ["password_digest", "$2a$04$TupsFR5UG9cLoJcvZBUB9e19NZrTjhJdWp8wxSb4G9a3ZrdQRqY8m"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.868932"], ["updated_at", "2015-05-16 07:18:03.868932"], ["verification_digest", "$2a$04$7/4M4nZ0Ce5waKI1hM8/feNQH8IXWgBMJXPMi8wxlH2I.5buo3NzS"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'vito_reichel' AND "users"."id" != 10) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('norris_borer@pfannerstill.net') AND "users"."id" != 10) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$cDrKjegB7Alu28spCKRmKeSZzAY/DNklYu05FVPbyI2HEGwS6OXum"], ["updated_at", "2015-05-16 07:18:03.879363"], ["id", 10]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'vito_reichel' AND "users"."id" != 10) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('norris_borer@pfannerstill.net') AND "users"."id" != 10) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:03.880881"], ["updated_at", "2015-05-16 07:18:03.883050"], ["id", 10]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'kyle_hamill' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('delphine@schowalter.name') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.1ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'kyle_hamill' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('delphine@schowalter.name') LIMIT 1[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "kyle_hamill"], ["email", "delphine@schowalter.name"], ["password_digest", "$2a$04$uQ7lPjI/JiTkmTY47h9vfOm.nymsWaFdkU0XThecQr1qGb4ARWG46"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.890965"], ["updated_at", "2015-05-16 07:18:03.890965"], ["verification_digest", "$2a$04$GHzUbQvHCZBE6.o6ct79RuDKX56mMaA96YO9KWTsk5eeZMiQfpwCq"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'kyle_hamill' AND "users"."id" != 11) LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('delphine@schowalter.name') AND "users"."id" != 11) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$xt15mYBW0PLPx9jPdnx82eKeldA73AErpStytupcUfqa2FMcVYD/e"], ["updated_at", "2015-05-16 07:18:03.901409"], ["id", 11]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'kyle_hamill' AND "users"."id" != 11) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('delphine@schowalter.name') AND "users"."id" != 11) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:03.902873"], ["updated_at", "2015-05-16 07:18:03.904946"], ["id", 11]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'sylvan_jacobs' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('erik.schimmel@hagenesyundt.name') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.1ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'sylvan_jacobs' LIMIT 1
+  [1m[36mUser Exists (0.1ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('erik.schimmel@hagenesyundt.name') LIMIT 1[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "sylvan_jacobs"], ["email", "erik.schimmel@hagenesyundt.name"], ["password_digest", "$2a$04$Z/Zj7KcBytLUPhNTSwDdweXLR.QsWPJ3SLLorUAlxwWCt24BDrNfW"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.914630"], ["updated_at", "2015-05-16 07:18:03.914630"], ["verification_digest", "$2a$04$NqfCXtFDbS52h0GoFb9dlOtxCOCxFZDR5Aiv0PLYp7OmkNW5WuTiO"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.0ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'sylvan_jacobs' AND "users"."id" != 12) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('erik.schimmel@hagenesyundt.name') AND "users"."id" != 12) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$i7ibzjp06Jo4bTBALcC.mOFeBaVtnFxGtydKwfWXv974p6UlK8suW"], ["updated_at", "2015-05-16 07:18:03.924373"], ["id", 12]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'sylvan_jacobs' AND "users"."id" != 12) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('erik.schimmel@hagenesyundt.name') AND "users"."id" != 12) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:03.925559"], ["updated_at", "2015-05-16 07:18:03.927495"], ["id", 12]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'rod.ryan' LIMIT 1[0m
+  [1m[35mUser Exists (0.4ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('bella.koch@champlinauer.org') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'rod.ryan' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('bella.koch@champlinauer.org') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "rod.ryan"], ["email", "bella.koch@champlinauer.org"], ["password_digest", "$2a$04$FeXKV1K3E224fRL9V73vlO.ZRmW0wM6oewivRnwwELqNYMl9gdBee"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:03.936877"], ["updated_at", "2015-05-16 07:18:03.936877"], ["verification_digest", "$2a$04$rdddL2in6.Tuen6kdfykIuig74NwuacrGxrDC9h7.XDJXfP0FGw1S"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  Rendered user_mailer/email_verification.text.erb within layouts/mailer (2.0ms)
+  Rendered user_mailer/email_verification.slim within layouts/mailer (3.5ms)
+
+UserMailer#email_verification: processed outbound mail in 180.5ms
+
+Sent mail to bella.koch@champlinauer.org (7.6ms)
+Date: Sat, 16 May 2015 03:18:04 -0400
+From: diy@example.com
+To: bella.koch@champlinauer.org
+Message-ID: <5556ef2c21560_6bbce0399050871@kelvin-UX305FA.mail>
+Subject: Email verification
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_5556ef2c2005f_6bbce0399050729";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_5556ef2c2005f_6bbce0399050729
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi rod.ryan,
+
+Welcome to the DiY! Please go to the link below to verify your email:
+
+
+http://localhost:3000/email_verifications/WKYtWwX8jFoC863Htq_ORA/edit?email=bella.koch%40champlinauer.org
+
+----==_mimepart_5556ef2c2005f_6bbce0399050729
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><body><h1>DiY</h1><p>Hi rod.ryan, </p><p>Welcome to DiY! Click the link below to verify your email:</p><a href="http://localhost:3000/email_verifications/WKYtWwX8jFoC863Htq_ORA/edit?email=bella.koch%40champlinauer.org">Verify email</a></body></html>
+----==_mimepart_5556ef2c2005f_6bbce0399050729--
+
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'kristian' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('jarrett_funk@klein.info') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'kristian' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('jarrett_funk@klein.info') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "kristian"], ["email", "jarrett_funk@klein.info"], ["password_digest", "$2a$04$JF42kIMLFX5P7dF0FotGAeIvR9BbbJH96EOdDELrjM95zvaNrs3Ji"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:04.147656"], ["updated_at", "2015-05-16 07:18:04.147656"], ["verification_digest", "$2a$04$NyYNuDNfClcVVXpJoMSateOimsxj95/mSWR9mICM9.fjTpjA9lPZ."]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'kristian' AND "users"."id" != 14) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('jarrett_funk@klein.info') AND "users"."id" != 14) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$aDOzcCDVfZazfJBrP9YBC.2NExbJ2Iw2JwUPVeAIohkD9YQMa12ze"], ["updated_at", "2015-05-16 07:18:04.157736"], ["id", 14]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'kristian' AND "users"."id" != 14) LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('jarrett_funk@klein.info') AND "users"."id" != 14) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:04.159008"], ["updated_at", "2015-05-16 07:18:04.160861"], ["id", 14]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  Rendered user_mailer/password_reset.text.erb within layouts/mailer (0.8ms)
+  Rendered user_mailer/password_reset.slim within layouts/mailer (3.3ms)
+
+UserMailer#password_reset: processed outbound mail in 11.3ms
+
+Sent mail to jarrett_funk@klein.info (3.2ms)
+Date: Sat, 16 May 2015 03:18:04 -0400
+From: diy@example.com
+To: jarrett_funk@klein.info
+Message-ID: <5556ef2c2ab1e_6bbce0399051050@kelvin-UX305FA.mail>
+Subject: Password reset
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_5556ef2c2a2ed_6bbce039905092a";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_5556ef2c2a2ed_6bbce039905092a
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+To reset your password please go to the link below.
+
+http://localhost:3000/password_resets/f664C1tkFkjjpbBzQCwwug/edit?email=jarrett_funk%40klein.info
+
+This link will expire in two hours.
+
+If you did not request your password to be reset, please ignore this email and
+your password will remain the same.
+
+----==_mimepart_5556ef2c2a2ed_6bbce039905092a
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><body><h1>Password reset</h1><p>To reset your password please click the link below:</p><a href="http://localhost:3000/password_resets/f664C1tkFkjjpbBzQCwwug/edit?email=jarrett_funk%40klein.info">Reset password</a><p>This link will expire in two hours.</p><p>If you did not request your password to be reset, please ignore this email and
+' your password will remain the same.</p></body></html>
+----==_mimepart_5556ef2c2a2ed_6bbce039905092a--
+
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'gerson' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('hardy@sipes.info') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'gerson' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('hardy@sipes.info') LIMIT 1[0m
+  [1m[35mCategory Load (0.4ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "gerson"], ["email", "hardy@sipes.info"], ["password_digest", "$2a$04$OwrlCPziiudqa7FkabuM5eXLkQ1Fiq2W1bgSvRsE./q3bhj3bYGt."], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:04.184479"], ["updated_at", "2015-05-16 07:18:04.184479"], ["verification_digest", "$2a$04$2modWMWW2fdBdXpvBeGdguumvD.urCqTx2k/4TPXOMtQAYmp.gPrS"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'gerson' AND "users"."id" != 15) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('hardy@sipes.info') AND "users"."id" != 15) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$uVUzya9SduyZgsGib/94O.aQn3UUbkHu/FKFlhxi2ICRXLjLYicXu"], ["updated_at", "2015-05-16 07:18:04.194492"], ["id", 15]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'gerson' AND "users"."id" != 15) LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('hardy@sipes.info') AND "users"."id" != 15) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:04.195755"], ["updated_at", "2015-05-16 07:18:04.197851"], ["id", 15]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  Rendered user_mailer/password_reset.text.erb within layouts/mailer (0.2ms)
+  Rendered user_mailer/password_reset.slim within layouts/mailer (0.2ms)
+
+UserMailer#password_reset: processed outbound mail in 2.4ms
+
+Sent mail to hardy@sipes.info (2.8ms)
+Date: Sat, 16 May 2015 03:18:04 -0400
+From: diy@example.com
+To: hardy@sipes.info
+Message-ID: <5556ef2c319b3_6bbce0399051272@kelvin-UX305FA.mail>
+Subject: Password reset
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_5556ef2c31262_6bbce03990511f3";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_5556ef2c31262_6bbce03990511f3
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+To reset your password please go to the link below.
+
+http://localhost:3000/password_resets/0mrAdzMS9cbRxk6mAGMFuQ/edit?email=hardy%40sipes.info
+
+This link will expire in two hours.
+
+If you did not request your password to be reset, please ignore this email and
+your password will remain the same.
+
+----==_mimepart_5556ef2c31262_6bbce03990511f3
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><body><h1>Password reset</h1><p>To reset your password please click the link below:</p><a href="http://localhost:3000/password_resets/0mrAdzMS9cbRxk6mAGMFuQ/edit?email=hardy%40sipes.info">Reset password</a><p>This link will expire in two hours.</p><p>If you did not request your password to be reset, please ignore this email and
+' your password will remain the same.</p></body></html>
+----==_mimepart_5556ef2c31262_6bbce03990511f3--
+
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'bernie' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('jarred.fadel@hickle.com') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'bernie' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('jarred.fadel@hickle.com') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "bernie"], ["email", "jarred.fadel@hickle.com"], ["password_digest", "$2a$04$JHa/Cpk6.UUdTVq/SqNXp.5P5qNiYfLWyUcdu8/CEsOxB0VZGZzkG"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:04.212390"], ["updated_at", "2015-05-16 07:18:04.212390"], ["verification_digest", "$2a$04$8Vogk.Uo5ogzqJ1yJltvZugBtpB6Yl9s.IPl9PTX6FR/iy8YXpUXe"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE ("users"."username" = 'bernie' AND "users"."id" != 16) LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('jarred.fadel@hickle.com') AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mSQL (0.2ms)[0m  UPDATE "users" SET "reset_digest" = $1, "updated_at" = $2 WHERE "users"."id" = $3  [["reset_digest", "$2a$04$NLwqCPUm4luCMayXW0YpNO84KiE1W4guwRtpgP/0ks1EnSd/EoQSG"], ["updated_at", "2015-05-16 07:18:04.222272"], ["id", 16]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE ("users"."username" = 'bernie' AND "users"."id" != 16) LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE (LOWER("users"."email") = LOWER('jarred.fadel@hickle.com') AND "users"."id" != 16) LIMIT 1
+  [1m[36mSQL (0.2ms)[0m  [1mUPDATE "users" SET "reset_sent_at" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["reset_sent_at", "2015-05-16 07:18:04.223526"], ["updated_at", "2015-05-16 07:18:04.225612"], ["id", 16]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  Rendered user_mailer/password_reset.text.erb within layouts/mailer (0.2ms)
+  Rendered user_mailer/password_reset.slim within layouts/mailer (0.2ms)
+
+UserMailer#password_reset: processed outbound mail in 2.8ms
+
+Sent mail to jarred.fadel@hickle.com (2.9ms)
+Date: Sat, 16 May 2015 03:18:04 -0400
+From: diy@example.com
+To: jarred.fadel@hickle.com
+Message-ID: <5556ef2c38613_6bbce039905146d@kelvin-UX305FA.mail>
+Subject: Password reset
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_5556ef2c37dfa_6bbce039905138e";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+----==_mimepart_5556ef2c37dfa_6bbce039905138e
+Content-Type: text/plain;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+To reset your password please go to the link below.
+
+http://localhost:3000/password_resets/Peliy1HX7HzzudAcWEg48w/edit?email=jarred.fadel%40hickle.com
+
+This link will expire in two hours.
+
+If you did not request your password to be reset, please ignore this email and
+your password will remain the same.
+
+----==_mimepart_5556ef2c37dfa_6bbce039905138e
+Content-Type: text/html;
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html><body><h1>Password reset</h1><p>To reset your password please click the link below:</p><a href="http://localhost:3000/password_resets/Peliy1HX7HzzudAcWEg48w/edit?email=jarred.fadel%40hickle.com">Reset password</a><p>This link will expire in two hours.</p><p>If you did not request your password to be reset, please ignore this email and
+' your password will remain the same.</p></body></html>
+----==_mimepart_5556ef2c37dfa_6bbce039905138e--
+
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'sasha_cremin' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('coleman_schaden@durgan.name') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'sasha_cremin' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('coleman_schaden@durgan.name') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "sasha_cremin"], ["email", "coleman_schaden@durgan.name"], ["password_digest", "$2a$04$abXWqH.UKfUGv/dQgtmiy.cpEu77/mwn2CAT3nWZRdu519YDRibue"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:04.240216"], ["updated_at", "2015-05-16 07:18:04.240216"], ["verification_digest", "$2a$04$4JpNqq74GIbkTQsRyItl.utw129.dZbGbSouVqEj8kguo7XSD4.MS"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "messages" ("sender_id", "subject", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["sender_id", 17], ["subject", "Commodi et odio et similique minus."], ["body", "Maiores eos vero excepturi. Iste voluptate consequuntur nam doloremque reprehenderit reiciendis. Qui pariatur laudantium velit unde ab et alias. Rem sunt asperiores."], ["created_at", "2015-05-16 07:18:04.247943"], ["updated_at", "2015-05-16 07:18:04.247943"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "messages" ("sender_id", "subject", "body", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["sender_id", 17], ["subject", "Ipsa quisquam possimus sit omnis velit et."], ["body", "Sint quia vel qui voluptatem fugit quidem ab. Delectus qui fuga dolores saepe consectetur similique velit. Qui iure ut."], ["created_at", "2015-05-16 07:18:04.250190"], ["updated_at", "2015-05-16 07:18:04.250190"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "messages" SET "recipient_id" = $1, "updated_at" = $2 WHERE "messages"."id" = $3  [["recipient_id", 17], ["updated_at", "2015-05-16 07:18:04.251889"], ["id", 2]]
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "messages" SET "recipient_id" = $1, "updated_at" = $2 WHERE "messages"."id" = $3[0m  [["recipient_id", 17], ["updated_at", "2015-05-16 07:18:04.253476"], ["id", 3]]
+  [1m[35m (0.2ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mMessage Load (0.3ms)[0m  [1mSELECT "messages".* FROM "messages" WHERE "messages"."recipient_id" = $1 AND (read is false)[0m  [["recipient_id", 17]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mUPDATE "messages" SET "created_at" = $1, "updated_at" = $2, "read" = $3 WHERE "messages"."id" = $4[0m  [["created_at", "2015-05-16 07:18:04.247943"], ["updated_at", "2015-05-16 07:18:04.251889"], ["read", "t"], ["id", 2]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  UPDATE "messages" SET "created_at" = $1, "updated_at" = $2, "read" = $3 WHERE "messages"."id" = $4  [["created_at", "2015-05-16 07:18:04.250190"], ["updated_at", "2015-05-16 07:18:04.253476"], ["read", "t"], ["id", 3]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.1ms)[0m  UPDATE "messages" SET "recipient_id" = NULL WHERE "messages"."recipient_id" = $1 AND (read is false)  [["recipient_id", 17]]
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'jeie_smith' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('leonardo_kunde@rodriguez.org') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'jeie_smith' LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('leonardo_kunde@rodriguez.org') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "jeie_smith"], ["email", "leonardo_kunde@rodriguez.org"], ["password_digest", "$2a$04$Rls.A3d5n92Jm6B5dIsOnusmgBQzb0L8PEB9RapwVTzRvuSx8d6fq"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:04.268576"], ["updated_at", "2015-05-16 07:18:04.268576"], ["verification_digest", "$2a$04$D9TO9aZrH1Jj9ungJAgvQ.3C67ZZrfwlEEBtPxPTXfCRfpnO.Qu/K"]]
+  [1m[35m (0.2ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'gonzalo' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('devante@wilderman.name') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'gonzalo' LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('devante@wilderman.name') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "gonzalo"], ["email", "devante@wilderman.name"], ["password_digest", "$2a$04$tnTmpURDjDILYuNfqANqzeLeRes/2PsB4Zfxe0tclhBkQPkb77/4e"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:09.561232"], ["updated_at", "2015-05-16 07:18:09.561232"], ["verification_digest", "$2a$04$bn4tRyqjeWmCo3FLFP4h1e1loKfs/EaR7Tsgd/kVLmORmL9RX43Sa"]]
+  [1m[35m (0.2ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mUser Exists (0.6ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'sonya' LIMIT 1[0m
+  [1m[35mUser Exists (0.5ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('mitchell@treutelbotsford.info') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'sonya' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('mitchell@treutelbotsford.info') LIMIT 1[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["username", "sonya"], ["email", "mitchell@treutelbotsford.info"], ["password_digest", "$2a$04$tFznJm26ovsp78VeHHkK2Oem19k3lfWKKdsYlOxmPIK8nwNhdFpva"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:09.745359"], ["updated_at", "2015-05-16 07:18:09.745359"], ["verification_digest", "$2a$04$2xc/wPDo.Lx8s2FGjzQVreerBznHHuWgUT6z9J9diBsIDngxtMlby"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mUser Exists (0.7ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'dedric.littel' LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('manley_kemmer@kulas.net') LIMIT 1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'dedric.littel' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('manley_kemmer@kulas.net') LIMIT 1[0m
+  [1m[35mCategory Load (0.3ms)[0m  SELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "users" ("avatar_url", "username", "email", "password_digest", "verified", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["avatar_url", "https://diyavatar.s3.amazonaws.com/#<Aws::S3::Object:0x0000000364e738>"], ["username", "dedric.littel"], ["email", "manley_kemmer@kulas.net"], ["password_digest", "$2a$04$eZXXIuO19FCdDbQF4vdul.XBJWn75j2ujnr6FlsRED5qvjCR/axSq"], ["verified", "t"], ["created_at", "2015-05-16 07:18:10.046307"], ["updated_at", "2015-05-16 07:18:10.046307"], ["verification_digest", "$2a$04$g.HD8nnR69.Eswc52NgQxeu8AcvNpht8OwoItPxr2.reQ8k3uQtkC"]]
+  [1m[35m (0.2ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "categories" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["name", "Kids"], ["description", "Atque quos excepturi laboriosam odit error voluptates. Aut aut molestiae. Id velit tenetur ea quia nobis inventore."], ["created_at", "2015-05-16 07:18:10.055663"], ["updated_at", "2015-05-16 07:18:10.055663"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "categories" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Books"], ["description", "Ut perspiciatis non mollitia. Vitae in vero harum libero commodi. Porro harum aliquam et."], ["created_at", "2015-05-16 07:18:10.058392"], ["updated_at", "2015-05-16 07:18:10.058392"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "categories" ("name", "description", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["name", "Sports"], ["description", "Et ut incidunt hic itaque ut eaque ab. Deleniti sit et neque quia. Dolore dolor dolorem enim assumenda. Sit eum aut vel iusto."], ["created_at", "2015-05-16 07:18:10.060560"], ["updated_at", "2015-05-16 07:18:10.060560"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'lawson.fay' LIMIT 1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('dakota@farrellpurdy.org') LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.3ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'lawson.fay' LIMIT 1[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('dakota@farrellpurdy.org') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "lawson.fay"], ["email", "dakota@farrellpurdy.org"], ["password_digest", "$2a$04$IWq0vPq4H1jCouhRL3LIBeQMQq7SeXDWD6QyKgc6ZQz6KRT6JG0T6"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:10.068456"], ["updated_at", "2015-05-16 07:18:10.068456"], ["verification_digest", "$2a$04$vVQ8bhTnJSXUdHxN47HwS.1G3awKyhVVn6nJHRmYYvswrqCGAAUmW"]]
+  [1m[36mSQL (0.5ms)[0m  [1mINSERT INTO "user_categories" ("category_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["category_id", 1], ["user_id", 22], ["created_at", "2015-05-16 07:18:10.079132"], ["updated_at", "2015-05-16 07:18:10.079132"]]
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "user_categories" ("category_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"  [["category_id", 2], ["user_id", 22], ["created_at", "2015-05-16 07:18:10.081560"], ["updated_at", "2015-05-16 07:18:10.081560"]]
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "user_categories" ("category_id", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["category_id", 3], ["user_id", 22], ["created_at", "2015-05-16 07:18:10.083062"], ["updated_at", "2015-05-16 07:18:10.083062"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'walker' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('rene.simonis@waelchigutmann.info') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'walker' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('rene.simonis@waelchigutmann.info') LIMIT 1
+  [1m[36mCategory Load (0.4ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "walker"], ["email", "rene.simonis@waelchigutmann.info"], ["password_digest", "$2a$04$uMxwl/cniALj.xQYSa1fFeRwTEWHG4.4W9HljOt33iJ9Ehbz/px3q"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:10.101328"], ["updated_at", "2015-05-16 07:18:10.101328"], ["verification_digest", "$2a$04$RprLHxgtlMabQE7jsuKELum2tJ3GbnfQtZR65zzsaB/Y90ziUqa/C"]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.3ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'catherine.ferry' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('alek.medhurst@pagac.biz') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'catherine.ferry' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('alek.medhurst@pagac.biz') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"  [["username", "catherine.ferry"], ["email", "alek.medhurst@pagac.biz"], ["password_digest", "$2a$04$CGDOYmRhK9R1ux8xBjW8qusOzzQhhMnB33rVm9cKDCGuuBYvoU/tC"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:10.115663"], ["updated_at", "2015-05-16 07:18:10.115663"], ["verification_digest", "$2a$04$HQny3u80OadYFznzHrGnrOr8Cs.TN8KrJLgnxrBfhlNw5g0/LOxCG"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE "users"."username" = 'juanita_hettinger' LIMIT 1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('verna@swaniawski.net') LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mUser Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "users" WHERE "users"."username" = 'juanita_hettinger' LIMIT 1[0m
+  [1m[35mUser Exists (0.2ms)[0m  SELECT  1 AS one FROM "users" WHERE LOWER("users"."email") = LOWER('verna@swaniawski.net') LIMIT 1
+  [1m[36mCategory Load (0.3ms)[0m  [1mSELECT "categories".* FROM "categories" WHERE "categories"."id" IN (1, 2, 3)[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "users" ("username", "email", "password_digest", "verified", "avatar_url", "created_at", "updated_at", "verification_digest") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"  [["username", "juanita_hettinger"], ["email", "verna@swaniawski.net"], ["password_digest", "$2a$04$aHwLZoX2NmyhdyMShETnMelH09FmaIgcdoKeQjGyX5vFqDQoD4NQK"], ["verified", "t"], ["avatar_url", "https://s3.amazonaws.com/diyavatar/avatar-placeholder.png"], ["created_at", "2015-05-16 07:18:10.137804"], ["updated_at", "2015-05-16 07:18:10.137804"], ["verification_digest", "$2a$04$PEnQSXoPoR6Lnr1oYk0jiulTEegE8vH7guZzqbG2Fi5H37sCsMsDi"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "questions" ("title", "body", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "optio eos qui"], ["body", "Nemo eos molestiae maiores iure. Doloribus rem pariatur hic autem repellat perspiciatis et. Cumque occaecati autem aut eos exercitationem. Fugit sint non et eum dolores ab suscipit. Sint expedita nihil aliquam molestiae et."], ["user_id", 4], ["created_at", "2015-05-16 07:18:10.146153"], ["updated_at", "2015-05-16 07:18:10.146153"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT 1[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "votes" ("user_id", "voteable_id", "voteable_type", "vote", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["user_id", 25], ["voteable_id", 1], ["voteable_type", "Question"], ["vote", "t"], ["created_at", "2015-05-16 07:18:10.151590"], ["updated_at", "2015-05-16 07:18:10.151590"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m

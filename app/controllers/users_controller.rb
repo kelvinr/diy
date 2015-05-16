@@ -62,41 +62,41 @@ class UsersController < ApplicationController
     redirect_to @user
   end
 
-  private
+private
 
-    def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation, :avatar_url)
-    end
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :avatar_url)
+  end
 
-    def uploads_cleaner
-      extras = params[:uploads].split
-      extras.each do |key|
-        S3_BUCKET.objects[key].delete if @user.avatar_url.match(/[^"]+/, 35).to_s != key
-      end
+  def uploads_cleaner
+    extras = params[:uploads].split
+    extras.each do |key|
+      S3_BUCKET.objects[key].delete if @user.avatar_url.match(/[^"]+/, 35).to_s != key
     end
+  end
 
-    def find_user
-      @user = User.find params[:id]
-    end
+  def find_user
+    @user = User.find params[:id]
+  end
 
-    def store_user
-      params[:remember_me].nil? ? forget(@user) : remember(@user)
-    end
+  def store_user
+    params[:remember_me].nil? ? forget(@user) : remember(@user)
+  end
 
-    def user_activity
-      case params[:tab]
-        when "comments"
-          @activity = Comment.where(creator: @user).limit(Comment::PER_PAGE).offset(params[:offset])
-          @pages = (@user.comments.size.to_f / Comment::PER_PAGE).ceil
-        when "recieved"
-          @activity = Message.where(recipient_id: @user.id).limit(Message::PER_PAGE).offset(params[:offset])
-          @pages = (@user.recieved_messages.size.to_f / Message::PER_PAGE).ceil
-        when "sent"
-          @activity = Message.where(sender_id: @user.id).limit(Message::PER_PAGE).offset(params[:offset])
-          @pages = (@user.sent_messages.size.to_f / Message::PER_PAGE).ceil
-        when nil
-          @activity = Question.where(user_id: @user.id).limit(Question::PER_PAGE).offset(params[:offset])
-          @pages = (@user.questions.size.to_f / Question::PER_PAGE).ceil
-      end
+  def user_activity
+    case params[:tab]
+      when "comments"
+        @activity = Comment.where(creator: @user).limit(Comment::PER_PAGE).offset(params[:offset])
+        @pages = (@user.comments.size.to_f / Comment::PER_PAGE).ceil
+      when "recieved"
+        @activity = Message.where(recipient_id: @user.id).limit(Message::PER_PAGE).offset(params[:offset])
+        @pages = (@user.recieved_messages.size.to_f / Message::PER_PAGE).ceil
+      when "sent"
+        @activity = Message.where(sender_id: @user.id).limit(Message::PER_PAGE).offset(params[:offset])
+        @pages = (@user.sent_messages.size.to_f / Message::PER_PAGE).ceil
+      when nil
+        @activity = Question.where(user_id: @user.id).limit(Question::PER_PAGE).offset(params[:offset])
+        @pages = (@user.questions.size.to_f / Question::PER_PAGE).ceil
     end
+  end
 end
