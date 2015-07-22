@@ -1,8 +1,8 @@
-=render 'shared/header', title: 'Categories'
+= render 'shared/header', title: 'Categories'
 
--if logged_in? && (params[:offset].nil? || params[:offset] == '0')
-  =render @user_subs
+- if logged_in? && (params[:offset].nil? || params[:offset] == '0')
+  = render @user_subs
 
-=render @categories
+= render @categories
 
-=render 'shared/pagination', page_count: Category::PER_PAGE, url: categories_path
+= render 'shared/pagination', page_count: Category::PER_PAGE, url: categories_path

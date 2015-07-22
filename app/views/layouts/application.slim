@@ -6,11 +6,11 @@ html
     meta name="viewport" content="width=device-width, initial-scale=1"
 
     title Diy
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks' => true
+    = stylesheet_link_tag 'application', "https://fonts.googleapis.com/icon?family=Material+Icons", media: 'all', 'data-turbolinks' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    =render 'layouts/navbar'
-    .container-fluid
-      =render 'layouts/msgs'
-      =yield
+    = render 'layouts/navbar'
+    .container
+      = render 'layouts/msgs'
+      = yield

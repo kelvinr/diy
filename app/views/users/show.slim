@@ -1,21 +1,21 @@
--@show_msgs ||= false
-=render 'shared/header', title: @user.username
+- @show_msgs ||= false
+= render 'shared/header', title: @user.username
 
-.container
-  .col-xs-12.well.user-info
-    .col-xs-6
-      =image_tag @user.avatar_url, class: 'img-responsive'
-    -if logged_in? && @user != current_user
-      .pull-right
-        =link_to new_message_path do
-          i.glyphicon.glyphicon-envelope
-          |  Send Message
-    h4
-      em> Username:
-      =@user.username
-    h4
-      em> Email verified:
-      =@user.verified == true ? 'Yes' : 'No'
+.col-xs-12.well.user-info
+  .col-xs-6
+    = image_tag @user.avatar_url, class: 'responsive-img'
+  -if logged_in? && @user != current_user
+    .pull-right
+      = link_to new_message_path do
+        i.material_icons
+          | mail
+        |  Send Message
+  h4
+    em> Username:
+    =@user.username
+  h4
+    em> Email verified:
+    =@user.verified == true ? 'Yes' : 'No'
 
   span.activity
     =@user.username

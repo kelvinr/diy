@@ -1,29 +1,35 @@
--if question.valid?
-  section.contain.hld
-    .question
-      span.category= link_to question.category.name, question.category
-      h5
-        = link_to question.title, question_path(question)
-      h6= question.body
-      small
-        =link_to question do
-          =pluralize question.comments.count, 'Comment'
-      small.text-muted
-        '  | Asked
-        =time_ago_in_words question.created_at
-        '  ago
+- if question.valid?
+  .card-panel.grey.lighten-5.z-depth-1
+    .row
+      .valign-wrapper
+        .col.s2.center-align.valign
+          - if logged_in?
+            = render 'shared/vote', obj: question, url: vote_question_path(question)
+          -else
+            br
+              strong= question.vote_count
 
-    .answered-question
-      -if question.answered
-        i.answered<
+          small
+            = link_to question do
+              = pluralize question.comments.count, 'Comment'
+          small.text-muted.hide-on-small-only
+            '  | Asked
+            = time_ago_in_words question.created_at
+            '  ago
 
-    .question-vote
-      -if logged_in?
-        =render 'shared/vote', obj: question, url: vote_question_path(question)
-      -else
-        br
-        strong =question.vote_count
-    .question-creator
-      =link_to question.creator do
-        =image_tag question.creator.avatar_url, class: 'img-responsive avatar'
-        =question.creator.username
+        .col.s10.m8
+          = link_to question.title, question_path(question)
+          = link_to question.category.name, question.category, class: "right"
+          h6.truncate
+            = question.body
+
+        .col.s2.right-align.hide-on-small-only
+          = link_to question.creator do
+            = image_tag question.creator.avatar_url, class: 'responsive-img avatar'
+            br
+            = question.creator.username
+
+
+      .answered-question
+        - if question.answered
+          i.answered<

@@ -1,5 +1,6 @@
-@import
-'bootstrap-sprockets',
-'bootstrap-custom',
-'nav',
-'custom';
+@import "materialize/components/color";
+@import 'materialize';
+
+.avatar {
+  max-height: 75px;
+}

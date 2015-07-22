@@ -29,6 +29,8 @@ $ ->
     )
   )
 
+  $(".button-collapse").sideNav()
+
   categories = $('#search-c')
   questions = $('#search-q')
   cResult = $('.cat-result')

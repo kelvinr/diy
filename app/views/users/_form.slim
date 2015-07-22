@@ -1,26 +1,30 @@
--new_user = @user.new_record?
-=render 'shared/header', title: new_user ? 'Register' : 'Edit Profile'
-=render 'shared/errors', obj: @user
+- new_user = @user.new_record?
+= render 'shared/header', title: new_user ? 'Register' : 'Edit Profile'
 
-#center-form.contain
-  h3 #{new_user ? 'Registration' : 'Edit profile'}
-  =form_for(@user, html: {class: 'directUpload'})  do |f|
-    .input
-      =f.label :username
-      =f.text_field :username, class: 'form-control'
+= form_for @user do |f|
+  .row
+    .input-field.col.s12
+      = f.text_field :username, id: 'username'
+      = f.label :username, for: 'username'
 
-    .input
-      =f.label :email
-      =f.email_field :email, class: 'form-control'
+  .row
+    .input-field.col.s12
+      =f.email_field :email, class: 'validate', id: 'email'
+      =f.label :email, for: 'email'
 
-    .input#pw
-      =f.label :password
-      =f.password_field :password, class: 'form-control'
+  .row
+    .input-field.col.s12
+      =f.password_field :password, id: 'password'
+      =f.label :password, for: 'password'
 
-    .input#confirmation
-      =f.label :password_confirmation, 'Confirmation'
-      =f.password_field :password_confirmation, class: 'form-control'
+  .row
+    .input-field.col.s12
+      = f.password_field :password_confirmation, id: 'password_confirmation'
+      = f.label :password_confirmation, 'Confirmation', for: 'password_confirmation'
 
-    .input
-      =render 'shared/remember_me', form: '/register'
-      =f.submit new_user ? 'Create profile' : 'Update profile', class: 'btn btn-primary'
+  .row
+    .input-field.col.s6
+      = render 'shared/remember_me.slim', form: '/register'
+    .input-field.col.s6
+      = f.button :submit, class: "btn waves-effect waves-light" do
+        = content_tag(:span, new_user ? "Create Profile" : "Update Profile")

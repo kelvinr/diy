@@ -1,11 +1,12 @@
-=render 'shared/header', title: @category.name
+= render 'shared/header', title: @category.name
 
-aside#category
-  =render 'subscribe', category: @category
-  -if logged_in? && current_user.verified
-    =render 'questions/form'
+.row
+  .col.s3
+    = render 'subscribe', category: @category
+    - if logged_in? && current_user.verified
+      = render 'questions/form'
 
-#category-questions
-  =render @questions
-  -if @questions.any?
-    =render 'shared/pagination', page_count: Question::PER_PAGE, url: category_path(@category)
+  .col.s9
+    = render @questions
+    - if @questions.any?
+      = render 'shared/pagination', page_count: Question::PER_PAGE, url: category_path(@category)

@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
-
-ruby '2.2.1'
+ruby '2.2.2'
 
 gem 'rails', '4.2.1'
 gem 'aws-sdk'
 gem 'sass-rails', '~> 5.0'
+gem 'materialize-sass'
+gem 'nokogiri'
 gem 'bootstrap-sass', '>= 3.3.3'
 gem 'slim'
 gem 'bcrypt'

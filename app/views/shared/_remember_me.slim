@@ -1,7 +1,6 @@
-=form_tag form do
-  =label_tag :remember_me, class: 'checkbox inline' do
-    -if @user && @user.remember_digest
-      =check_box_tag :remember_me, '1', true
-    -else
-      =check_box_tag :remember_me
-    small> Remember me on this computer
+= form_tag form do
+  -if @user && @user.remember_digest
+    = check_box_tag :remember_me, '1', true, class: 'filled-in', id: 'filled-in-box'
+  -else
+    =check_box_tag :remember_me, '0', false, class: 'filled-in', id: 'filled-in-box'
+    = label_tag :remember_me, "Remember me", for: 'filled-in-box'

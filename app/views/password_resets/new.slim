@@ -1,10 +1,12 @@
-=render 'shared/header', title: 'Password Reset'
+= render 'shared/header', title: 'Password Reset'
 
-#center-form.contain
-  h3 Forgot Password
-  =form_tag '/password_resets' do
-    .input
-      =label_tag :email
-      =email_field :email, nil, class: 'form-control'
+= form_tag '/password_resets' do
+  .row
+    .input-field.col.s12
+      = email_field :email, nil, class: 'validate'
+      = label_tag :email, nil, for: 'email'
 
-    =submit_tag 'Submit', class: 'btn btn-primary'
+  .row
+    .input-field.col.s12
+      = button_tag :submit, class: "btn waves-effect waves-light" do
+        = content_tag(:span, "Send")

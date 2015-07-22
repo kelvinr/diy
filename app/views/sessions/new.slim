@@ -1,17 +1,22 @@
-=render 'shared/header', title: 'Login'
-#center-form.contain
-  h3 Login
-  =form_tag '/login' do
-    .input
-      =label_tag :email, 'Username or Email'
-      =text_field_tag :email, nil, class: 'form-control'
+= render 'shared/header', title: 'Login'
 
-    .input
-      =label_tag :password
-      =password_field_tag :password, nil, class: 'form-control'
+= form_tag '/login' do
+  .row
+    .input-field.col.s12
+      = text_field_tag :email, nil, id: 'email'
+      = label_tag :email, 'Username or Email', for: 'email'
 
-    =link_to 'forgot password?', new_password_reset_path
+  .row
+    .input-field.col.s12
+      = password_field_tag :password, nil, id: 'password'
+      = label_tag :password, nil, for: 'password'
 
-    .input
-      =render 'shared/remember_me', form: '/login'
-      =submit_tag 'Login', class: 'btn btn-success'
+
+  .row
+    .input-field.col.s4
+      = render 'shared/remember_me', form: '/login'
+    .input-filed.col.s6
+      = button_tag :submit, class: "btn waves-effect waves-light" do 
+        = content_tag(:span, 'Login')
+    .col.s2
+      = link_to 'forgot password?', new_password_reset_path

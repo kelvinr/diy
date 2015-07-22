@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery.turbolinks
+//= require materialize-sprockets
 //= require jquery_ujs
 //= require jquery-fileupload/vendor/jquery.ui.widget
 //= require jquery-fileupload/vendor/load-image.all.min
@@ -20,10 +21,6 @@
 //= require jquery-fileupload/jquery.fileupload
 //= require jquery-fileupload/jquery.fileupload-process
 //= require jquery-fileupload/jquery.fileupload-image
-//= require bootstrap/alert
-//= require bootstrap/button
-//= require bootstrap/dropdown
-//= require bootstrap/collapse
 //= require custom
 //= require turbolinks
 //= require_tree .

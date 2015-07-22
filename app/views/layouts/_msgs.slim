@@ -1,5 +1,4 @@
 -if flash.keys.any?
-  -flash.each do |type, msg|
-    .alert class="alert-#{type == 'success' ? type : 'danger'}"
-      a.close data-dismiss='alert' X
+  - flash.each do |type, msg|
+    .card-panel class="#{type == 'success' ? 'green lighten-1' : 'red lighten-1'}"
       div id="#{type}" =msg
