@@ -1,17 +1,20 @@
-=render 'shared/header', title: 'New password'
-=render 'shared/errors', obj: @user
+= render 'shared/header', title: 'New password'
 
-#center-form.contain
-  h3 Password reset
-  =form_for(@user, url: password_reset_path(params[:id])) do |f|
+= form_for(@user, url: password_reset_path(params[:id])) do |f|
 
-    =hidden_field_tag :email, @user.email
+  = hidden_field_tag :email, @user.email
 
-    .input
-      =f.label :password
-      =f.password_field :password, class: 'form-control'
-    .input
-      =f.label :password_confirmation, 'Confirmation'
-      =f.password_field :password_confirmation, class: 'form-control'
+  .row
+    .input-field.col.s12
+      = f.password_field :password
+      = f.label :password, for: 'password'
 
-    =f.submit 'Update password', class: 'btn btn-success'
+  .row
+    .input-field.col.s12
+      = f.password_field :password_confirmation
+      = f.label :password_confirmation, 'Confirmation', for: 'password-confirmation'
+  
+  .row
+    .input-field.col.s12
+      = f.button :submit, class: 'btn waves-effect waves-light' do
+        = content_tag(:span, "Update Password")

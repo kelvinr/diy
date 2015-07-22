@@ -8,5 +8,6 @@
 
   .col.s9
     = render @questions
-    - if @questions.any?
-      = render 'shared/pagination', page_count: Question::PER_PAGE, url: category_path(@category)
+
+- if @questions.any?
+  = render 'shared/pagination', page_count: Question::PER_PAGE, url: category_path(@category)

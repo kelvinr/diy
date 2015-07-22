@@ -1,13 +1,12 @@
-=render 'shared/header', title: 'All questions'
+= render 'shared/header', title: 'All questions'
 
-.question-list
-  =render @questions
-  -if @questions.empty?
-    #center-form
-      .alert.alert-info
-        | You don't have any subscriptions yet! Now that you're logged in click over to categories or enter a search term.
-            All questions for your category subscriptions will be found here.
+= render @questions
+- if @questions.empty?
+  .card-panel.orange.darken-4.z-depth-3
+      | You don't have any subscriptions yet! Now that you're logged in click over to categories or enter a search term.
+          All questions for your category subscriptions will be found here.
 
 
--if @questions.any?
-  =render 'shared/pagination', page_count: Question::PER_PAGE, url: root_path
+- if @questions.any?
+  .col.s12
+    = render 'shared/pagination', page_count: Question::PER_PAGE, url: root_path

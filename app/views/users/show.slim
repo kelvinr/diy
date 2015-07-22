@@ -1,52 +1,46 @@
 - @show_msgs ||= false
 = render 'shared/header', title: @user.username
 
-.col-xs-12.well.user-info
-  .col-xs-6
-    = image_tag @user.avatar_url, class: 'responsive-img'
-  -if logged_in? && @user != current_user
-    .pull-right
-      = link_to new_message_path do
-        i.material_icons
-          | mail
-        |  Send Message
-  h4
-    em> Username:
-    =@user.username
-  h4
-    em> Email verified:
-    =@user.verified == true ? 'Yes' : 'No'
+.card-panel.teal.lighten-5.z-depth-3
+  .row
+    -if logged_in? && @user != current_user
+      .right
+        = link_to new_message_path do
+          i.material-icons
+            | drafts
+    .col.s6
+      = image_tag @user.avatar_url, class: 'responsive-img'
+    .col.s6
+      em> Username:
+      = @user.username
+      br
+      em> Email verified:
+      = @user.verified == true ? 'Yes' : 'No'
 
-  span.activity
-    =@user.username
-    | 's Activity
-  ul.nav.nav-tabs#user-activity
-    li class="#{'active' if params[:tab].nil?}"
-      =link_to "Questions (#{@user.questions.size})", @user
-    li class="#{'active' if params[:tab] == 'comments'}"
-      =link_to "Comments (#{@user.comments.size})", user_path(@user, tab: "comments")
-    -if @show_msgs
-      li class="#{'active' if params[:tab] == 'recieved'}"
-        =link_to "Recieved Messages (#{@user.recieved_messages.size})", user_path(@user, tab: "recieved")
-      li class="#{'active' if params[:tab] == 'sent'}"
-        =link_to "Sent Messages (#{@user.sent_messages.size})", user_path(@user, tab: "sent")
-
-  / Render the tab according to the tab parameter
-  -if params[:tab].nil?
-    =render @activity
-    =render "shared/pagination", page_count: Question::PER_PAGE, url: user_path(@user)
-  -elsif params[:tab] == "comments"
-    =render @activity
-    =render "shared/pagination", page_count: Comment::PER_PAGE, url: user_path(@user), other_params: "&tab=comments"
-  -elsif @show_msgs
-    -if params[:tab] == "recieved"
-      -@user.mark_unread_messages!
-      =render @activity
-      -if @activity.any?
-        =render "shared/pagination", page_count: Message::PER_PAGE, url: user_path(@user), other_params: "&tab=recieved"
-    -elsif params[:tab] == "sent"
-      =render @activity
-      -if @activity.any?
-        =render "shared/pagination", page_count: Message::PER_PAGE, url: user_path(@user), other_params: "&tab=sent"
-  -else
-    -private_msg(@show, params[:tab])
+span.activity
+  = @user.username
+  | 's Activity
+.row
+  .col.s12
+    ul.tabs#user-activity
+      li.tab.col.s3
+        = link_to "Questions (#{@user.questions.size})", "#questions"
+      li.tab.col.s3
+        = link_to "Comments (#{@user.comments.size})", "#comments"
+      - if @show_msgs
+        li.tab.col.s3
+          = link_to "Recieved Messages (#{@user.recieved_messages.size})", "#recieved"
+        li.tab.col.s3
+          = link_to "Sent Messages (#{@user.sent_messages.size})", "#sent"
+    #questions.col.s12
+      = render @user.questions
+      = render 'shared/pagination', page_count: Question::PER_PAGE, url: user_path(@user)
+    #comments.col.s12
+      = render @user.comments
+      = render "shared/pagination", page_count: Comment::PER_PAGE, url: user_path(@user), other_params: "#comments"
+    #recieved.col.s12
+      = render @user.recieved_messages
+      = render 'shared/pagination', page_count: Message::PER_PAGE, url: user_path(@user), other_params: "#recieved"
+    #sent.col.s12
+      = render @user.sent_messages
+      = render 'shared/pagination', page_count: Message::PER_PAGE, url: user_path(@user), other_params: "#sent"
